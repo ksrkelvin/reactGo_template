@@ -1,15 +1,17 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/navbar';
 
 function App() {
   return (
-
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">
-        Tailwind CSS funcionando 🎉
-      </h1>
-      <p className="mt-4 text-gray-700">React + Tailwind configurado manualmente</p>
+<div className="h-full bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex flex-1 min-h-0">
+        {/* <Sidebar user={user} /> */}
+        {/* <MainContent>{children}</MainContent> */}
+      </div>
+      {/* <Footer /> */}
     </div>
   );
 
