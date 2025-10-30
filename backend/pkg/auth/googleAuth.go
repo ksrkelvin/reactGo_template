@@ -65,7 +65,7 @@ func (auth *Auth) GoogleCallback(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwt", tokenJWT, 3600*24, "/", "", false, true)
+	c.SetCookie("X_AUTH", tokenJWT, 3600*24, "/", "", false, true)
 
 	c.Redirect(302, "/")
 

@@ -57,7 +57,7 @@ func (p *Auth) ValidateJWT(tokenString string) (claims *Claims, err error) {
 
 func (p *Auth) JWTMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenStr, err := c.Cookie("jwt")
+		tokenStr, err := c.Cookie("X_AUTH")
 		if err != nil {
 			c.Set("user", nil)
 			c.Next()
