@@ -1,3 +1,5 @@
+import { toggleSidebar } from "../sidebar";
+
 const NavBar =()=>{
 	return (
 		<nav className="bg-white shadow-md border-b border-gray-200">
@@ -11,7 +13,7 @@ const NavBar =()=>{
 				<div className="flex items-center w-full md:max-w-md justify-between">
 					<button
 						className="md:hidden ml-2 p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-						// onClick={() => toggleSidebar()}
+						onClick={() => toggleSidebar()}
 						aria-label="Abrir menu"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
