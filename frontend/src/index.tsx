@@ -1,25 +1,26 @@
-import  { StrictMode } from 'react';
-import  { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { getUser, AuthProvider } from './auth';
 import AppLayout from './components/layout';
+import { LoadingProvider } from './contexts/loading';
+import AuthProvider from './contexts/auth';
 
-const initializeApp = async () => {
-	const userSession = await getUser();
-
-	createRoot(document.getElementById('root')!).render(
-		<StrictMode>
-					<BrowserRouter>
-						<AuthProvider appAuth={userSession}>
-							<AppLayout>
-								<App />
-							</AppLayout>
-						</AuthProvider>
-					</BrowserRouter>
-		</StrictMode>
-	);
+const initializeApp = () => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <BrowserRouter>
+			<LoadingProvider>
+        <AuthProvider>
+          <AppLayout>
+            <App />
+          </AppLayout>
+        </AuthProvider>
+			</LoadingProvider>
+      </BrowserRouter>
+    </StrictMode>
+  );
 };
 
 initializeApp();

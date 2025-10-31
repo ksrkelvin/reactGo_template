@@ -27,21 +27,23 @@ func RegisterControllers(eng *gin.Engine, auth *auth.Auth, service *service.Serv
 		service: service,
 	}
 
-	eng.Use(auth.JWTMiddleware())
-
 	err = c.AuthController()
 	if err != nil {
 		return
 	}
 
+	eng.Use(auth.JWTMiddleware())
+
 	err = c.HomeController()
 	if err != nil {
 		return
 	}
+
 	err = c.MeController()
 	if err != nil {
 		return
 	}
+
 	frontend, _ := filepath.Abs("frontend/build")
 	eng.NoRoute(func(c *gin.Context) {
 		c.File(filepath.Join(frontend, "index.html"))

@@ -11,11 +11,11 @@ func (c *Controllers) AuthController() (err error) {
 		}
 	}()
 
-	c.eng.GET("/login", c.Login)
-	c.eng.POST("/logout", c.Logout)
-
 	auth := c.eng.Group("/auth")
 	{
+		auth.GET("/login", c.Login)
+		auth.POST("/logout", c.Logout)
+
 		google := auth.Group("/google")
 		{
 			google.GET("/", c.auth.GoogleLogin)

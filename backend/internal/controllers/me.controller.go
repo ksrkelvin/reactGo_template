@@ -13,7 +13,7 @@ func (c *Controllers) MeController() (err error) {
 		}
 	}()
 
-	me := c.eng.Group("/me")
+	me := c.eng.Group("/api/me/")
 	{
 		me.GET("/", c.GetUser)
 		me.PUT("/", c.UpdateUser)
@@ -30,7 +30,12 @@ func (c *Controllers) GetUser(ctx *gin.Context) {
 		}
 	}()
 
-	var _ = dto.UserUpdateRequest{}
+	var user, err = c.service.GetUser(ctx)
+	if err != nil {
+		ctx.JSON(404, "User Not Found")
+	}
+
+	ctx.JSON(200, user)
 
 }
 

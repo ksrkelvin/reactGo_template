@@ -9,38 +9,43 @@ export class HttpClient {
 		return `${this.apiURL}${path}`;
 	}
 
-	private getOptions(method: string, token?: string, body?: any): RequestInit {
-		const headers = new Headers();
-		if (token) headers.append('Authorization', `Bearer ${token}`);
+private getOptions(method: string, body?: any): RequestInit {
+  const headers = new Headers();
 
-		const isFormData = body instanceof FormData;
-		if (body && !isFormData) headers.append('Content-Type', 'application/json');
 
-		return { method, headers, credentials: 'include', body: isFormData ? body : JSON.stringify(body) };
-	}
+  const isFormData = body instanceof FormData;
+  if (body && !isFormData) headers.append('Content-Type', 'application/json');
 
-	async get(path: string, token?: string) {
-		const requestOptions = this.getOptions('GET', token);
+  return { 
+    method, 
+    headers, 
+    credentials: 'include', 
+    body: isFormData ? body : JSON.stringify(body) 
+  };
+}
+
+async get(path: string) {
+  const requestOptions = this.getOptions('GET');
+  return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
+}
+
+	async delete(path: string) {
+		const requestOptions = this.getOptions('DELETE', );
 		return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
 	}
 
-	async delete(path: string, token?: string) {
-		const requestOptions = this.getOptions('DELETE', token);
+	async post<K>(path: string, body: K | FormData) {
+		const requestOptions = this.getOptions('POST',  body);
 		return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
 	}
 
-	async post<K>(path: string, body: K | FormData, token?: string) {
-		const requestOptions = this.getOptions('POST', token, body);
+	async put<K>(path: string, body: K, ) {
+		const requestOptions = this.getOptions('PUT',  body);
 		return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
 	}
 
-	async put<K>(path: string, body: K, token?: string) {
-		const requestOptions = this.getOptions('PUT', token, body);
-		return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
-	}
-
-	async patch<K>(path: string, body: K, token?: string) {
-		const requestOptions = this.getOptions('PATCH', token, body);
+	async patch<K>(path: string, body: K, ) {
+		const requestOptions = this.getOptions('PATCH',  body);
 		return fetch(this.getUrl(path), requestOptions).then(this.handleResponse);
 	}
 
