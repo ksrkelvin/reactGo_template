@@ -7,7 +7,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
   useLoading()
 
-  if (!user) {
+  if (user?.email === "" || !user) {
     return <Navigate to="/login" />;
   }
 

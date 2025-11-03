@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { HttpClient } from '../../adapter/http/http.client';
 import { serverClient } from '../../adapter/http/server.client';
 import { User } from '../../domain/models/user.models';
 

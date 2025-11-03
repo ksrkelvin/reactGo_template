@@ -3,6 +3,7 @@ import {
   faChevronRight,
   faChevronLeft,
   faHome,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +38,15 @@ export const Sidebar: React.FC = () => {
           >
             <FontAwesomeIcon icon={faHome} size="lg" />
             {!isCollapsed && <span className="font-medium">Home</span>}
+          </button>
+        </li>
+        <li className="flex items-center space-x-3 cursor-pointer text-gray-700 hover:text-blue-600">
+          <button
+            onClick={() => navigate("/me")}
+            title="Me"
+          >
+            <FontAwesomeIcon icon={faUser} size="lg" />
+            {!isCollapsed && <span className="font-medium">Me</span>}
           </button>
         </li>
       </ul>
