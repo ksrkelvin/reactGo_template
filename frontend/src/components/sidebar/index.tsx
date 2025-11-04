@@ -8,7 +8,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
-
 export const Sidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
@@ -31,19 +30,21 @@ export const Sidebar: React.FC = () => {
       </button>
 
       <ul className="flex-1 flex flex-col mt-4 space-y-4 px-3">
-        <li className="flex items-center space-x-3 cursor-pointer text-gray-700 hover:text-blue-600">
+        <li>
           <button
             onClick={() => navigate("/")}
             title="Home"
+            className="flex items-center space-x-3 w-full text-gray-700 hover:text-blue-600 cursor-pointer px-2 py-1 rounded hover:bg-blue-100 transition-colors"
           >
             <FontAwesomeIcon icon={faHome} size="lg" />
             {!isCollapsed && <span className="font-medium">Home</span>}
           </button>
         </li>
-        <li className="flex items-center space-x-3 cursor-pointer text-gray-700 hover:text-blue-600">
+        <li>
           <button
             onClick={() => navigate("/me")}
             title="Me"
+            className="flex items-center space-x-3 w-full text-gray-700 hover:text-blue-600 cursor-pointer px-2 py-1 rounded hover:bg-blue-100 transition-colors"
           >
             <FontAwesomeIcon icon={faUser} size="lg" />
             {!isCollapsed && <span className="font-medium">Me</span>}

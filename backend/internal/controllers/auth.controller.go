@@ -17,7 +17,7 @@ func (c *Controllers) AuthController() (err error) {
 	{
 		auth.POST("/login", c.Login)
 		auth.POST("/register", c.Register)
-		auth.POST("/logout", c.Logout)
+		auth.GET("/logout", c.Logout)
 
 		google := auth.Group("/google")
 		{
@@ -36,6 +36,8 @@ func (a *Controllers) Logout(ctx *gin.Context) {
 		}
 	}()
 
+	ctx.SetCookie("X_AUTH", "", -1, "/", "", false, true)
+	ctx.Redirect(302, "/")
 }
 
 func (a *Controllers) Login(ctx *gin.Context) {
