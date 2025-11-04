@@ -6,6 +6,11 @@ type UserCreateRequest struct {
 	Password string `json:"password" form:"password"`
 }
 
+type UserLoginRequest struct {
+	Email    string `json:"email" form:"email"`
+	Password string `json:"password" form:"password"`
+}
+
 type UserUpdateRequest struct {
 	Name   string `form:"name"`
 	Avatar string `form:"avatar"`

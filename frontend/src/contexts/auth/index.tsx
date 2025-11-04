@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { serverClient } from '../../adapter/http/server.client';
 import { User } from '../../domain/models/user.models';
+import { useLoading } from '../loading';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  loading: boolean;
   error: string | null;
   logout: () => void;
 }
@@ -27,12 +27,12 @@ const fetchUser = async (): Promise<User> => {
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const loading = useLoading();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      setLoading(true);
+      loading.showLoading();
       try {
         const userData = await fetchUser();
         setUser(userData);
@@ -41,7 +41,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setUser(null);
         setError(err.message);
       } finally {
-        setLoading(false);
+        loading.hideLoading();
       }
     };
 
@@ -54,7 +54,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   };
 
   return (
-    <AuthContext.Provider value={{ user, token: null, loading, error, logout }}>
+    <AuthContext.Provider value={{ user, token: null,  error, logout }}>
       {children}
     </AuthContext.Provider>
   );

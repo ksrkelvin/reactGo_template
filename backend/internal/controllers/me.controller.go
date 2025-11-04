@@ -30,9 +30,9 @@ func (c *Controllers) GetUser(ctx *gin.Context) {
 		}
 	}()
 
-	var user, err = c.service.GetUser(ctx)
+	var user, status, err = c.service.GetUser(ctx)
 	if err != nil {
-		ctx.JSON(404, "User Not Found")
+		ctx.JSON(status, "User Not Found")
 		return
 	}
 

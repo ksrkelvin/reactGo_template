@@ -16,7 +16,7 @@ const Loading: React.FC = () => {
       }}
     >
       <div style={{ padding: 20, background: 'white', borderRadius: 8, boxShadow: '0 0 10px rgba(0,0,0,0.3)', fontSize: 18 }}>
-        Carregando...
+        Loading...
       </div>
     </div>
   );
