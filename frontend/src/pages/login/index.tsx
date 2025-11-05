@@ -1,96 +1,111 @@
 import React, { useState } from "react";
 import { serverClient } from "../../adapter/http/server.client";
 import { useLoading } from "../../contexts/loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Navigate, useNavigate } from "react-router-dom";
 
-function LoginPage() {
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loading = useLoading();
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  async function handleSubmit(event: React.FormEvent) {
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    loading.showLoading();
     setError(null);
+    loading.showLoading();
 
     try {
       const response = await serverClient.post("/auth/login", {
         email,
         password,
       });
-      if (response.redirect) {
+
+      if (response?.redirect) {
         window.location.href = response.redirect;
+        return;
       }
     } catch (e: any) {
-      setError(e.message);
+      const message =
+        e?.response?.data?.message || e.message || "Erro ao fazer login";
+      setError(message);
     } finally {
       loading.hideLoading();
     }
   }
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white rounded-lg shadow-md p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-        Login
-      </h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="flex flex-col">
-          <span className="text-gray-700 font-semibold">Email</span>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </label>
-        <label className="flex flex-col">
-          <span className="text-gray-700 font-semibold">Password</span>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </label>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors"
-        >
-          Login
-        </button>
-        <a
-          href={serverClient.getUrl("/register")}
-          className="inline-flex items-center justify-center gap-2 mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
-        >
-          Register
-        </a>
-      </form>
+        <div
+      className="max-w-md mx-auto mt-12 rounded-xl shadow-lg p-6 transition-all"
+      style={{
+        backgroundColor: "var(--color-surface)",
+        color: "var(--color-text)",
+        border: "1px solid var(--color-border)",
+      }}
+    >
+        <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
 
-      <div className="mt-6 text-center">
-        <p className="text-gray-600">Login with</p>
-        <a
-          href={serverClient.getUrl("/auth/google")}
-          className="inline-flex items-center justify-center gap-2 mt-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-colors"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 48 48"
-          >
-            <path
-              fill="#FFFFFF"
-              d="M44.5 20H24v8.5h11.9C34.5 33.5 30.5 37 24 37c-7.7 0-14-6.3-14-14s6.3-14 14-14c3.8 0 7.2 1.5 9.7 4l6.8-6.8C36.7 3.1 30.7 0 24 0 10.7 0 0 10.7 0 24s10.7 24 24 24c12.2 0 22.3-8.9 23.8-20.5H44.5z"
+        {error && (
+          <div className="mb-4 p-3 text-sm text-red-600 bg-red-100 border border-red-300 rounded-lg">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <label className="flex flex-col">
+            <span className="text-sm font-semibold mb-1">Email</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="px-3 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-input)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
+              placeholder="you@example.com"
             />
-          </svg>
-          Google
-        </a>
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-sm font-semibold mb-1">Password</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="px-3 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-input)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
+              placeholder="••••••••"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition-colors"
+          >
+            Sign In
+          </button>
+
+          <button
+            onClick={() => navigate("/register")}
+            className="w-full text-center mt-2 px-4 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-semibold rounded-lg transition-colors"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-[var(--color-muted)] mb-2">Ou entre com</p>
+          <a
+            href={serverClient.getUrl("/auth/google")}
+            className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 bg-[#DB4437] hover:bg-[#c5372f] text-white font-semibold rounded-lg transition-colors"
+          >
+            <FontAwesomeIcon icon={faGoogle} />
+            Google
+          </a>
+        </div>
       </div>
-    </div>
   );
-}
+};
 
 export default LoginPage;

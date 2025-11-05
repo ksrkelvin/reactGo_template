@@ -4,52 +4,77 @@ import {
   faChevronLeft,
   faHome,
   faUser,
+  faChartBar,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const Sidebar: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    { path: "/", label: "Home", icon: faHome },
+    { path: "/me", label: "Perfil", icon: faUser },
+  ];
 
   return (
     <aside
-      className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 shadow-md ${
-        isCollapsed ? "w-20" : "w-64"
-      }`}
+      className={`relative flex flex-col transition-all duration-300 overflow-hidden border-r`}
+      style={{
+        width: collapsed ? "5rem" : "15rem",
+        background: "var(--color-surface)",
+        borderColor: "var(--color-border)",
+        color: "var(--color-text)",
+      }}
+      aria-label="Sidebar Navigation"
     >
       <button
-        className="px-2 py-3 text-gray-600 hover:text-blue-600 focus:outline-none self-end"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        aria-label={isCollapsed ? "Expandir sidebar" : "Encolher sidebar"}
+        onClick={() => setCollapsed(!collapsed)}
+        aria-label={collapsed ? "Expandir sidebar" : "Encolher sidebar"}
+        className="absolute -right-3 top-6 bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-border)] p-2 rounded-full shadow-md transition-all"
       >
-        <FontAwesomeIcon
-          icon={isCollapsed ? faChevronRight : faChevronLeft}
-          size="lg"
-        />
+        <FontAwesomeIcon icon={collapsed ? faChevronRight : faChevronLeft} size="sm" />
       </button>
 
-      <ul className="flex-1 flex flex-col mt-4 space-y-4 px-3">
-        <li>
-          <button
-            onClick={() => navigate("/")}
-            title="Home"
-            className="flex items-center space-x-3 w-full text-gray-700 hover:text-blue-600 cursor-pointer px-2 py-1 rounded hover:bg-blue-100 transition-colors"
-          >
-            <FontAwesomeIcon icon={faHome} size="lg" />
-            {!isCollapsed && <span className="font-medium">Home</span>}
-          </button>
-        </li>
-        <li>
-          <button
-            onClick={() => navigate("/me")}
-            title="Me"
-            className="flex items-center space-x-3 w-full text-gray-700 hover:text-blue-600 cursor-pointer px-2 py-1 rounded hover:bg-blue-100 transition-colors"
-          >
-            <FontAwesomeIcon icon={faUser} size="lg" />
-            {!isCollapsed && <span className="font-medium">Me</span>}
-          </button>
-        </li>
+      <ul className="flex-1 flex flex-col mt-4 space-y-1 px-2">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <li key={item.path}>
+              <button
+                onClick={() => navigate(item.path)}
+                title={item.label}
+                className={`group flex items-center w-full px-3 py-3 rounded-lg transition-all ${
+                  isActive
+                    ? "bg-[var(--color-primary)] text-[var(--color-text)] bg-opacity-20"
+                    : "hover:bg-[var(--color-border)] hover:bg-opacity-30"
+                }`}
+              >
+                <FontAwesomeIcon
+                  icon={item.icon}
+                  size="lg"
+                  className={`transition-colors ${
+                    isActive
+                      ? "text-[var(--color-text)]"
+                      : "text-[var(--color-text)] opacity-80 group-hover:opacity-100"
+                  }`}
+                />
+                {!collapsed && (
+                  <span
+                    className={`ml-3 text-sm font-medium ${
+                      isActive ? "text-[var(--color-text)]" : "text-[var(--color-text)]"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                )}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </aside>
   );

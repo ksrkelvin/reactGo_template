@@ -1,9 +1,21 @@
-const NavBar = () => {
+import React from "react";
+import { ThemeToggle } from "../themeToggle";
+
+export const Navbar: React.FC = () => {
   return (
-    <nav className="w-full bg-blue-600 text-white p-4 shadow-md flex items-center">
-        <h1 className="text-2xl font-semibold tracking-wide">DIINO</h1>
-      </nav>
+    <header
+      className="flex items-center justify-between px-6 h-16 border-b"
+      style={{ borderColor: "border", background: "var(--color-surface)" }}
+    >
+      <h1 className="text-lg font-semibold tracking-wide" style={{ color: "var(--color-text)" }}>
+        My Dashboard
+      </h1>
+
+      <div className="flex items-center gap-4">
+        <ThemeToggle />
+      </div>
+    </header>
   );
 };
 
-export default NavBar;
+export default Navbar;

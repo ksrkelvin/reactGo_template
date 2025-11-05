@@ -1,22 +1,19 @@
-import { User } from "../../domain/models/user.models";
-import Footer from "../footer";
-import Navbar from "../navbar";
+import React from "react";
 import { Sidebar } from "../sidebar";
+import { Navbar } from "../navbar";
+import { Footer } from "../footer";
 
-export interface LayoutProps{
-  user: User;
-  children: React.ReactNode;
-}
-
-function AppLayout({ children }: { children: React.ReactNode }) {
-
+export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      className="flex flex-col min-h-screen"
+      style={{ background: "var(--color-bg)", color: "var(--color-text)" }}
+    >
       <Navbar />
-       <div className="flex flex-1 overflow-hidden">
-       <Sidebar/>
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
         <main className="flex-1 overflow-auto p-6">
-          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6">
+          <div>
             {children}
           </div>
         </main>
@@ -24,6 +21,5 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       <Footer />
     </div>
   );
-}
-
+};
 export default AppLayout;
