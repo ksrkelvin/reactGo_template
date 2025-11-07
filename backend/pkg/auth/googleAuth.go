@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/oauth2"
-	"gorm.io/gorm"
 )
 
 func (auth *Auth) GoogleLogin(ctx *gin.Context) {
@@ -46,6 +45,7 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 	defer resp.Body.Close()
 
 	profile := dto.ExternalAuthProfile{}
+	profile.Source = "Google"
 
 	if err = json.NewDecoder(resp.Body).Decode(&profile); err != nil {
 		ctx.String(500, "Erro ao decodificar perfil do Google")
@@ -80,11 +80,16 @@ func (auth *Auth) SaveOrGetExternalUser(profile dto.ExternalAuthProfile) (userMo
 
 	user, err := auth.Repository.GetUserByEmail(profile.Email)
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return auth.Repository.CreateUser(newUser)
-		}
 		return userModels, err
 	}
-	return user, nil
 
+	if user.ID == 0 {
+		createdUser, errCreate := auth.Repository.CreateUser(newUser)
+		if errCreate != nil {
+			return userModels, errCreate
+		}
+		return createdUser, nil
+	}
+
+	return user, nil
 }
