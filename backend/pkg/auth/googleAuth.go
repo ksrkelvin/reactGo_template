@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/oauth2"
-	"gorm.io/gorm"
 )
 
 func (auth *Auth) GoogleLogin(ctx *gin.Context) {
@@ -52,7 +51,14 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 
-	userModel, err := auth.SaveOrGetExternalUser(profile)
+	newUser := models.User{
+		Name:         profile.Name,
+		Email:        profile.Email,
+		Avatar:       profile.Picture,
+		AuthProvider: profile.Source,
+	}
+
+	userModel, err := auth.Repository.CreateUser(newUser)
 	if err != nil {
 		ctx.String(500, "Erro ao tentar salvar usuario Google")
 		return
@@ -67,24 +73,4 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 	ctx.SetCookie("X_AUTH", tokenJWT, 3600*24, "/", "", false, true)
 
 	ctx.Redirect(302, "/")
-
-}
-
-func (auth *Auth) SaveOrGetExternalUser(profile dto.ExternalAuthProfile) (userModels models.User, err error) {
-	newUser := models.User{
-		Name:         profile.Name,
-		Email:        profile.Email,
-		Avatar:       profile.Picture,
-		AuthProvider: profile.Source,
-	}
-
-	user, err := auth.Repository.GetUserByEmail(profile.Email)
-	if err != nil {
-		if err != gorm.ErrRecordNotFound {
-			return auth.Repository.CreateUser(newUser)
-		}
-		return userModels, err
-	}
-	return user, err
-
 }
