@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import Loading from '../../components/loading';
 
 interface LoadingContextType {
   loading: boolean;
@@ -26,7 +25,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   return (
     <LoadingContext.Provider value={{ loading, showLoading, hideLoading }}>
       {children}
-      {loading && <Loading />}
+      {loading && <div>Loading...</div>}
     </LoadingContext.Provider>
   );
 };

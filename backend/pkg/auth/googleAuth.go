@@ -52,11 +52,10 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 
-	profile.Source = "Gooogle"
 	userModel, err := auth.SaveOrGetExternalUser(profile)
 	if err != nil {
 		ctx.String(500, "Erro ao tentar salvar usuario Google")
-
+		return
 	}
 
 	tokenJWT, err := auth.GenerateJWT(userModel.Email, "diino-app")
@@ -72,10 +71,17 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 }
 
 func (auth *Auth) SaveOrGetExternalUser(profile dto.ExternalAuthProfile) (userModels models.User, err error) {
+	newUser := models.User{
+		Name:         profile.Name,
+		Email:        profile.Email,
+		Avatar:       profile.Picture,
+		AuthProvider: profile.Source,
+	}
+
 	user, err := auth.Repository.GetUserByEmail(profile.Email)
 	if err != nil {
 		if err != gorm.ErrRecordNotFound {
-			return auth.Repository.CreateExternalUser(profile)
+			return auth.Repository.CreateUser(newUser)
 		}
 		return userModels, err
 	}
