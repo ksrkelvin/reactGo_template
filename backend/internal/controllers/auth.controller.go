@@ -32,7 +32,7 @@ func (a *Controllers) Logout(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			ctx.String(500, "Erro inesperado: "+err.Error())
+			ctx.JSON(500, gin.H{"error": err.Error()})
 		}
 	}()
 
@@ -44,7 +44,7 @@ func (a *Controllers) Login(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			ctx.String(500, "Erro inesperado: "+err.Error())
+			ctx.JSON(500, gin.H{"error": err.Error()})
 		}
 	}()
 
@@ -79,7 +79,7 @@ func (a *Controllers) Register(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			ctx.String(500, "Erro inesperado: "+err.Error())
+			ctx.JSON(500, gin.H{"error": err.Error()})
 		}
 	}()
 

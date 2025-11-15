@@ -50,7 +50,7 @@ func RegisterControllers(eng *gin.Engine, auth *auth.Auth, service *service.Serv
 		return
 	}
 
-	err = c.MeController()
+	err = c.APIController()
 	if err != nil {
 		return
 	}
@@ -61,4 +61,20 @@ func RegisterControllers(eng *gin.Engine, auth *auth.Auth, service *service.Serv
 	})
 
 	return c, err
+}
+
+func (c *Controllers) APIController() (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = r.(error)
+		}
+	}()
+
+	api := c.eng.Group("/api")
+	{
+		api.GET("/me", c.GetUser)
+		api.PUT("/me/avatar", c.UpdateAvatar)
+	}
+
+	return
 }

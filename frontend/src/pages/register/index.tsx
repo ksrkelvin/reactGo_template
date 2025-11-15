@@ -111,14 +111,14 @@ function RegisterPage() {
 
          <button
             type="submit"
-            className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold py-2 rounded-lg transition-colors"
+            className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-semibold py-2 rounded-lg transition-colors"
           >
-          Register
+          Sign Up
         </button>
 
         <button
           onClick={() => navigate("/login")}
-          className="w-full text-center mt-2 px-4 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-semibold rounded-lg transition-colors"
+          className="w-full text-center mt-2 px-4 py-2  bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold rounded-lg transition-colors"
         >
           Sign In
         </button>

@@ -8,6 +8,7 @@ interface AuthContextType {
   token: string | null;
   error: string | null;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,16 +49,24 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     fetchUserData();
   }, []);
 
+  const refreshUser = async () => {
+    try {
+      const userData = await fetchUser();
+      setUser(userData); 
+    } catch (err) {
+      console.error("Erro ao atualizar usuário:", err);
+    }
+  };
+
   const logout = () => {
     setUser(null);
-
   };
 
   return (
-    <AuthContext.Provider value={{ user, token: null,  error, logout }}>
+    <AuthContext.Provider value={{ user, token: null, error, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthProvider
+export default AuthProvider;

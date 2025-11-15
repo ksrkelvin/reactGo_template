@@ -32,7 +32,6 @@ func (r *Repository) GetUserByEmail(email string) (userModel models.User, err er
 	return user, nil
 }
 
-func (r *Repository) UpdateUser(user models.User) error {
-	result := r.DB.Save(&user)
-	return result.Error
+func (r *Repository) UpdateAvatar(userID uint, avatar string) error {
+	return r.DB.Model(&models.User{}).Where("id = ?", userID).Update("avatar", avatar).Error
 }

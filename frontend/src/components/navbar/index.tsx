@@ -8,7 +8,7 @@ export const Navbar: React.FC = () => {
       style={{ borderColor: "border", background: "var(--color-surface)" }}
     >
       <h1 className="text-lg font-semibold tracking-wide" style={{ color: "var(--color-text)" }}>
-        My Dashboard
+        DIINO
       </h1>
 
       <div className="flex items-center gap-4">

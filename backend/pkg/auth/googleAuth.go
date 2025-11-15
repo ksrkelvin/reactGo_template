@@ -13,7 +13,7 @@ func (auth *Auth) GoogleLogin(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			ctx.String(500, "Erro inesperado: "+err.Error())
+			ctx.JSON(500, gin.H{"error": err.Error()})
 		}
 	}()
 
@@ -25,7 +25,7 @@ func (auth *Auth) GoogleCallback(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			err := r.(error)
-			ctx.String(500, "Erro inesperado: "+err.Error())
+			ctx.JSON(500, gin.H{"error": err.Error()})
 		}
 	}()
 

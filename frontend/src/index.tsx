@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import AppLayout from "./components/layout";
 import { LoadingProvider } from "./contexts/loading";
 import AuthProvider from "./contexts/auth";
+import { ModalProvider } from "./contexts/modal";
 
 const initializeApp = () => {
   createRoot(document.getElementById("root")!).render(
@@ -13,9 +14,11 @@ const initializeApp = () => {
       <BrowserRouter>
         <LoadingProvider>
           <AuthProvider>
-            <AppLayout>
-              <App />
-            </AppLayout>
+            <ModalProvider>
+              <AppLayout>
+                <App />
+              </AppLayout>
+            </ModalProvider>
           </AuthProvider>
         </LoadingProvider>
       </BrowserRouter>

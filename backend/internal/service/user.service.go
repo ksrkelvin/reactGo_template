@@ -4,12 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"reactGoTemplate/backend/internal/dto"
-	"reactGoTemplate/backend/internal/models"
-	"reactGoTemplate/backend/pkg/utils"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 func (s *Service) GetUser(ctx *gin.Context) (userDto dto.UserResponse, status int, err error) {
@@ -33,7 +29,7 @@ func (s *Service) GetUser(ctx *gin.Context) (userDto dto.UserResponse, status in
 	return userResponse, http.StatusOK, err
 }
 
-func (s *Service) UpdateUser(ctx *gin.Context, userUpdate dto.UserUpdateRequest) (userDto dto.UserResponse, status int, err error) {
+func (s *Service) UpdateAvatar(ctx *gin.Context, avatarUpdate dto.AvatarUpdateRequest) (userDto dto.UserResponse, status int, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = r.(error)
@@ -44,30 +40,21 @@ func (s *Service) UpdateUser(ctx *gin.Context, userUpdate dto.UserUpdateRequest)
 		return userDto, status, err
 	}
 
-	if userUpdate.Name != "" {
-		userSection.Name = userUpdate.Name
+	if userSection.ID == 0 {
+		return userDto, http.StatusNotFound, fmt.Errorf("User not found")
 	}
 
-	if userUpdate.Avatar != "" {
-		userSection.Avatar = userUpdate.Avatar
+	if avatarUpdate.Avatar == "" {
+		return userDto, http.StatusBadRequest, fmt.Errorf("Avatar URL cannot be empty")
 	}
 
-	user := models.User{
-		Model: gorm.Model{
-			ID:        userSection.ID,
-			UpdatedAt: time.Now(),
-		},
-		Email:  userSection.Email,
-		Name:   userSection.Name,
-		Avatar: userSection.Avatar,
-	}
-
-	err = s.Repository.UpdateUser(user)
+	err = s.Repository.UpdateAvatar(userSection.ID, avatarUpdate.Avatar)
 	if err != nil {
 		return userDto, http.StatusInternalServerError, err
 	}
+	userSection.Avatar = avatarUpdate.Avatar
 
-	return userSection, http.StatusOK, nil
+	return userSection, http.StatusOK, err
 }
 
 func (s *Service) GetUserFromContext(c *gin.Context) (userDto dto.UserResponse, status int, err error) {
@@ -87,72 +74,4 @@ func (s *Service) GetUserFromContext(c *gin.Context) (userDto dto.UserResponse, 
 	}
 
 	return u, http.StatusOK, err
-}
-
-func (s *Service) CreateUser(createUser dto.UserCreateRequest) (userDto dto.UserResponse, status int, err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = r.(error)
-		}
-	}()
-
-	userExists, err := s.Repository.GetUserByEmail(createUser.Email)
-	if err != nil {
-		return userDto, http.StatusInternalServerError, err
-	}
-	if userExists.ID != 0 {
-		return userDto, http.StatusBadRequest, fmt.Errorf("User with email %s already exists", createUser.Email)
-	}
-
-	hashedPassword, err := utils.HashPassword(createUser.Password)
-	if err != nil {
-		return userDto, http.StatusInternalServerError, err
-	}
-
-	newUser := models.User{
-		Name:     createUser.Name,
-		Email:    createUser.Email,
-		Password: string(hashedPassword),
-	}
-	user, err := s.Repository.CreateUser(newUser)
-	if err != nil {
-		return userDto, http.StatusInternalServerError, err
-	}
-	userDto = dto.UserResponse{
-		ID:     user.ID,
-		Name:   user.Name,
-		Email:  user.Email,
-		Avatar: user.Avatar,
-	}
-
-	return userDto, http.StatusCreated, err
-}
-
-func (s *Service) LoginUser(loginRequest dto.UserLoginRequest) (userDto dto.UserResponse, status int, err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = r.(error)
-		}
-	}()
-
-	userExists, err := s.Repository.GetUserByEmail(loginRequest.Email)
-	if err != nil {
-		return userDto, http.StatusInternalServerError, err
-	}
-	if userExists.ID == 0 {
-		return userDto, http.StatusBadRequest, fmt.Errorf("User with email %s does not exist", loginRequest.Email)
-	}
-
-	if !utils.CheckPassword(userExists.Password, loginRequest.Password) {
-		return userDto, http.StatusUnauthorized, fmt.Errorf("Email or password is incorrect")
-	}
-
-	userDto = dto.UserResponse{
-		ID:     userExists.ID,
-		Name:   userExists.Name,
-		Email:  userExists.Email,
-		Avatar: userExists.Avatar,
-	}
-
-	return userDto, http.StatusOK, nil
 }

@@ -11,9 +11,8 @@ type UserLoginRequest struct {
 	Password string `json:"password" form:"password"`
 }
 
-type UserUpdateRequest struct {
-	Name   string `form:"name"`
-	Avatar string `form:"avatar"`
+type AvatarUpdateRequest struct {
+	Avatar string `json:"avatar"`
 }
 
 type UserResponse struct {

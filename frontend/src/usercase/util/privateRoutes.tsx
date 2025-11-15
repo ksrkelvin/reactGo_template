@@ -1,8 +1,7 @@
-import { JSX } from "react";
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from "../../contexts/auth";
 
-const RequireAuth = ({ children }: { children: JSX.Element }) => {
+const RequireAuth = () => {
   const { user } = useAuth();
 
 
@@ -10,7 +9,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default RequireAuth

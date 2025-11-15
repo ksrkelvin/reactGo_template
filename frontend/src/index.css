@@ -3,30 +3,45 @@
 @tailwind utilities;
 
 
+
 :root {
-  --color-bg: #f8fafc;
-  --color-surface: #ffffff;
-  --color-text: #111827;
-  --color-border: #e5e7eb;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-accent: #10b981;
-  --color-accent-hover: #059669;
+--color-surface: #ffffff;
+--color-text: #222233;
+--color-border: #ced4da;
+--color-primary: #3a50f8;
+--color-primary-hover: #2e3bb1;
+--color-accent: #28a745;
+--color-accent-hover: #218838;
+--color-danger: #ff6b6b;
+--color-danger-hover: #e05555;
+--color-input: #f8f9fa;
+--color-muted: #6c757d;
 }
+
 
 [data-theme="dark"] {
-  --color-bg: #0f172a;
-  --color-surface: #1e293b;
-  --color-text: #f1f5f9;
-  --color-border: #334155;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-accent: #10b981;
-  --color-accent-hover: #059669;
+--color-surface: #212223;
+--color-text: #e4e6eb;
+--color-border: #2c2d2e;
+--color-primary: #4b6ef6;
+--color-primary-hover: #3955d2;
+--color-accent: #28a745;
+--color-accent-hover: #218838;
+--color-danger: #ff6b6b;
+--color-danger-hover: #e05555;
+--color-input: #2c2d2e;
+--color-muted: #a1a3a6;
 }
 
+
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+background-color: var(--color-surface);
+color: var(--color-text);
+transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
