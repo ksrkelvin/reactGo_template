@@ -2,29 +2,6 @@ package config
 
 import (
 	"log"
-	"reactGoTemplate/backend/internal/controllers"
-	"reactGoTemplate/backend/internal/repository"
-	"reactGoTemplate/backend/internal/service"
-	"reactGoTemplate/backend/pkg/auth"
-
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	"gorm.io/gorm"
-)
-
-type Diino struct {
-	DB          *gorm.DB
-	Routes      *gin.Engine
-	Auth        *auth.Auth
-	Controllers *controllers.Controllers
-	Repository  *repository.Repository
-	Service     *service.Service
-}
-
-package config
-
-import (
-	"log"
 	"orcamental/backend/internal/controllers"
 	"orcamental/backend/internal/repository"
 	"orcamental/backend/internal/service"
