@@ -2,10 +2,10 @@ package config
 
 import (
 	"log"
-	"orcamental/backend/internal/controllers"
-	"orcamental/backend/internal/repository"
-	"orcamental/backend/internal/service"
-	"orcamental/backend/pkg/auth"
+	"reactGoTemplate/backend/internal/controllers"
+	"reactGoTemplate/backend/internal/repository"
+	"reactGoTemplate/backend/internal/service"
+	"reactGoTemplate/backend/pkg/auth"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
