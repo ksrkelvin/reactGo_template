@@ -17,7 +17,7 @@ function RegisterPage() {
     loading.showLoading();
 
     try {
-      const response = await serverClient.post("/auth/register", {
+      const response = await serverClient.post("auth/register", {
         name,
         email,
         password,

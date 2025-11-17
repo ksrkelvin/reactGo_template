@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
     loading.showLoading();
 
     try {
-      const response = await serverClient.post("/auth/login", {
+      const response = await serverClient.post("auth/login", {
         email,
         password,
       });
