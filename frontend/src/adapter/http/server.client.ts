@@ -6,6 +6,6 @@ class ServerClient extends HttpClient {
 	}
 }
 
-const serverUrl = 'http://localhost:8080';
+const serverUrl = '/api';
 
 export const serverClient = new ServerClient(serverUrl);

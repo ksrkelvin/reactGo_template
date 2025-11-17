@@ -73,7 +73,7 @@ const UpdateAvatar = () => {
     loading.showLoading();
 
     try {
-      const response = await serverClient.put("/api/me/avatar", {
+      const response = await serverClient.put("/me/avatar", {
         avatar,
       });
 
