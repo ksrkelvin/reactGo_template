@@ -6,6 +6,6 @@ class ServerClient extends HttpClient {
 	}
 }
 
-const serverUrl = '/api';
+const serverUrl = '/';
 
 export const serverClient = new ServerClient(serverUrl);

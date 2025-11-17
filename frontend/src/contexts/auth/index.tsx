@@ -22,7 +22,7 @@ export const useAuth = () => {
 };
 
 const fetchUser = async (): Promise<User> => {
-  const response = await serverClient.get('/me');
+  const response = await serverClient.get('api/me');
   return response;
 };
 
